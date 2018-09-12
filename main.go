@@ -17,6 +17,7 @@ func main() {
 	defer server.Close()
 
 	client := oneway.NewClient(serverIp, serverPort)
+	defer client.Close()
 
 	if person, err := client.GetPerson(context.Background(), 1); err != nil {
 		panic(fmt.Sprintf("GetPersonInfo failed: %s\n", err))

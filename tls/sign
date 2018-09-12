@@ -2,6 +2,7 @@
 
 set CA_CN [lindex $argv 0]
 set SERVER_CN [lindex $argv 1]
+set SERVER_IP [lindex $argv 2]
 set OUT "out"
 
 set CA_DIR "ca"
@@ -10,18 +11,18 @@ set CLIENT_DIR "client"
 
 spawn rm -rf ${OUT} ${CA_DIR} ${SERVER_DIR} ${CLIENT_DIR}
 
-proc password {order cn} {
-    spawn certstrap ${order} --cn ${cn}
+proc password {} {
     expect "*?(empty for no passphrase):*"
     send "\r"
     expect "*?passphrase again:*"
     send "\r"
     expect eof
 }
+spawn certstrap init --cn ${CA_CN}
+password
 
-password "init" ${CA_CN}
-
-password "request-cert" ${SERVER_CN}
+spawn certstrap request-cert --ip ${SERVER_IP} --cn ${SERVER_CN}
+password
 
 spawn certstrap sign ${SERVER_CN} --CA ${CA_CN}
 expect eof
