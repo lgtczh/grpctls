@@ -1,0 +1,17 @@
+syntax = "proto3";
+package protos;
+//protoc -I . service.proto --go_out=plugins=grpc:./
+
+message Person {
+    string name = 1;
+    int32 id = 2;
+    string email = 3;
+}
+
+message Request {
+    int32 req_id = 1;
+}
+
+service PersonInfoProvider {
+    rpc GetPersonInfo(Request) returns (Person) {}
+}
