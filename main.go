@@ -3,8 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"grpctls/protos"
-	"grpctls/replica"
+	"grpctls/oneway"
 )
 
 var (
@@ -13,15 +12,13 @@ var (
 )
 
 func main() {
-	server := replica.New()
+	server := oneway.NewServer()
 	server.StartServer(serverPort)
 	defer server.Close()
 
-	conn := replica.NewClientConn(serverIp, serverPort)
-	defer conn.Close()
+	client := oneway.NewClient(serverIp, serverPort)
 
-	client := protos.NewPersonInfoProviderClient(conn)
-	if person, err := client.GetPersonInfo(context.Background(), &protos.Request{ReqId: 1}); err != nil {
+	if person, err := client.GetPerson(context.Background(), 1); err != nil {
 		panic(fmt.Sprintf("GetPersonInfo failed: %s\n", err))
 	} else {
 		fmt.Printf("Person: %+v\n", person)

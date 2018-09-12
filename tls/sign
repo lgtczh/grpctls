@@ -3,10 +3,12 @@
 set CA_CN [lindex $argv 0]
 set SERVER_CN [lindex $argv 1]
 set OUT "out"
-set SERVER_DIR "server"
-set CA_DIR "ca"
 
-spawn rm -rf ${OUT} ${CA_DIR} ${SERVER_DIR}
+set CA_DIR "ca"
+set SERVER_DIR "server"
+set CLIENT_DIR "client"
+
+spawn rm -rf ${OUT} ${CA_DIR} ${SERVER_DIR} ${CLIENT_DIR}
 
 proc password {order cn} {
     spawn certstrap ${order} --cn ${cn}
@@ -28,6 +30,7 @@ spawn rm -f ${OUT}/${SERVER_CN}.csr ${OUT}/${CA_CN}.crl
 spawn mkdir ${SERVER_DIR}
 spawn mv ${OUT}/${SERVER_CN}.crt ${OUT}/${SERVER_CN}.key ${SERVER_DIR}
 spawn mv ${OUT} ${CA_DIR}
+spawn cp -r ${SERVER_DIR} ${CLIENT_DIR}
 spawn chmod -R 755 .
 
 expect eof

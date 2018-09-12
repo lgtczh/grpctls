@@ -1,18 +1,17 @@
-package replica
+package oneway
 
 import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"grpctls/common"
 	"grpctls/protos"
 	"net"
 )
 
 type Server struct {
 	personInfo []*User
-	crt        string
-	key        string
 	grpcServer *grpc.Server
 }
 
@@ -22,20 +21,15 @@ type User struct {
 	email string
 }
 
-func New() *Server {
+func NewServer() *Server {
 	users := []*User{
 		{1, "Tom", "tom@email.com"},
 		{2, "Jack", "jack@email.com"},
 	}
-	server := &Server{
+	return &Server{
 		personInfo: users,
-		crt:        serverCrt,
-		key:        serverKey,
+		grpcServer: grpc.NewServer(grpc.Creds(getServerCred(common.ServerCrt, common.ServerKey))),
 	}
-	creds := server.getServerCreds()
-	server.grpcServer = grpc.NewServer(grpc.Creds(creds))
-
-	return server
 }
 
 func (s *Server) StartServer(port int) {
@@ -56,13 +50,13 @@ func (s *Server) Close() {
 	s.grpcServer.Stop()
 }
 
-func (s *Server) getServerCreds() credentials.TransportCredentials {
-	creds, err := credentials.NewServerTLSFromFile(s.crt, s.key)
+func getServerCred(crtFile, keyFile string) credentials.TransportCredentials {
+	cred, err := credentials.NewServerTLSFromFile(crtFile, keyFile)
 	if err != nil {
 		panic(fmt.Sprintf("Server: failed to generate credentials: %s\n", err))
 	}
 
-	return creds
+	return cred
 }
 
 func (s *Server) GetPersonInfo(ctx context.Context, in *protos.Request) (*protos.Person, error) {

@@ -36,7 +36,7 @@ func (m *Person) Reset()         { *m = Person{} }
 func (m *Person) String() string { return proto.CompactTextString(m) }
 func (*Person) ProtoMessage()    {}
 func (*Person) Descriptor() ([]byte, []int) {
-	return fileDescriptor_service_f3a59211b6f32b0d, []int{0}
+	return fileDescriptor_service_8e858e112747ef9d, []int{0}
 }
 func (m *Person) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Person.Unmarshal(m, b)
@@ -88,7 +88,7 @@ func (m *Request) Reset()         { *m = Request{} }
 func (m *Request) String() string { return proto.CompactTextString(m) }
 func (*Request) ProtoMessage()    {}
 func (*Request) Descriptor() ([]byte, []int) {
-	return fileDescriptor_service_f3a59211b6f32b0d, []int{1}
+	return fileDescriptor_service_8e858e112747ef9d, []int{1}
 }
 func (m *Request) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Request.Unmarshal(m, b)
@@ -192,9 +192,9 @@ var _PersonInfoProvider_serviceDesc = grpc.ServiceDesc{
 	Metadata: "service.proto",
 }
 
-func init() { proto.RegisterFile("service.proto", fileDescriptor_service_f3a59211b6f32b0d) }
+func init() { proto.RegisterFile("service.proto", fileDescriptor_service_8e858e112747ef9d) }
 
-var fileDescriptor_service_f3a59211b6f32b0d = []byte{
+var fileDescriptor_service_8e858e112747ef9d = []byte{
 	// 176 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x44, 0x8e, 0xcf, 0x0a, 0x82, 0x40,
 	0x10, 0x87, 0xd3, 0x5a, 0xa3, 0x01, 0x0d, 0x86, 0x02, 0xe9, 0x24, 0x9e, 0x3c, 0x79, 0xb0, 0x37,
