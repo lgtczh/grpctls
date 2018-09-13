@@ -1,4 +1,4 @@
-package oneway
+package grpconeway
 
 import (
 	"context"
@@ -11,23 +11,14 @@ import (
 )
 
 type Server struct {
-	personInfo []*User
+	personInfo []*common.User
 	grpcServer *grpc.Server
 }
 
-type User struct {
-	id    int32
-	name  string
-	email string
-}
-
 func NewServer() *Server {
-	users := []*User{
-		{1, "Tom", "tom@email.com"},
-		{2, "Jack", "jack@email.com"},
-	}
+
 	return &Server{
-		personInfo: users,
+		personInfo: common.Users,
 		grpcServer: grpc.NewServer(grpc.Creds(getServerCred(common.ServerCrt, common.ServerKey))),
 	}
 }
@@ -61,8 +52,8 @@ func getServerCred(crtFile, keyFile string) credentials.TransportCredentials {
 
 func (s *Server) GetPersonInfo(ctx context.Context, in *protos.Request) (*protos.Person, error) {
 	for _, user := range s.personInfo {
-		if user.id == in.ReqId {
-			return &protos.Person{Id: user.id, Name: user.name, Email: user.email}, nil
+		if user.GetId() == in.ReqId {
+			return &protos.Person{Id: user.GetId(), Name: user.GetName(), Email: user.GetEmail()}, nil
 		}
 	}
 	return nil, fmt.Errorf("Not found %d\n", in.ReqId)

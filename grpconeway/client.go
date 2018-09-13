@@ -1,12 +1,12 @@
-package oneway
+package grpconeway
 
 import (
+	"context"
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"grpctls/common"
 	"grpctls/protos"
-	"context"
 )
 
 type Client struct {
@@ -48,6 +48,6 @@ func (c *Client) Close() {
 	c.clientConn.Close()
 }
 
-func (c *Client) GetPerson(ctx context.Context, id int32) (*protos.Person, error){
+func (c *Client) GetPerson(ctx context.Context, id int32) (*protos.Person, error) {
 	return c.grpcClient.GetPersonInfo(ctx, &protos.Request{ReqId: id})
 }
